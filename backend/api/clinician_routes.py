@@ -3,49 +3,6 @@ from config.db_config import get_db_connection
 
 clinician_bp = Blueprint('clinician', __name__)
 
-@clinician_bp.route('/pending-reviews', methods=['GET'])
-def get_pending_reviews():
-    """Get all responses pending review, along with conversation ID and the first unreviewed query."""
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        query = """
-        SELECT
-            r.id,
-            q.question,
-            c.id AS conversation_id
-        FROM
-            responses r
-        JOIN
-            queries q ON r.query_id = q.id
-        JOIN
-            conversations c ON q.conversation_id = c.id
-        WHERE
-            r.status = 'unreviewed'
-        ORDER BY
-            c.created_at ASC, r.created_at ASC
-        LIMIT 1;
-        """
-
-        cursor.execute(query)
-        review = cursor.fetchall()
-
-        conn.close()
-        if review:
-            # Convert the review tuple to a dictionary for better readability
-            review_dict = {
-                'id': review[0],
-                'question': review[1],
-                'conversation_id': review[2]
-            }
-            return jsonify({"success": True, "data": review_dict})
-        else:
-            return jsonify({"success": True, "data": None}) # No pending reviews
-
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
 @clinician_bp.route('/responses/edit/<int:response_id>', methods=['PUT'])
 def update_response(response_id):
     """Update a response."""
@@ -84,7 +41,7 @@ def verify_response(response_id):
 
         query = """
             UPDATE responses
-            SET status = 'reviewed'
+            SET status = 'reviewed', reviewed_at = CURRENT_TIMESTAMP
             WHERE id = %s
             """
         values = (response_id,)
@@ -144,6 +101,52 @@ def get_conversation(conversation_id):
                 'response_created_at': row[7]
             }
             conversation_list.append(query_dict)
+
+        return jsonify({"success": True, "data": conversation_list})
+
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@clinician_bp.route('/pending-conversations', methods=['GET'])
+def get_pending_conversations():
+    """Get all conversations with any unreviewed responses, sorted by the earliest unreviewed query."""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        query = """
+        SELECT
+            c.id AS conversation_id,
+            c.created_at AS conversation_created_at,
+            MIN(q.created_at) AS earliest_unreviewed_query
+        FROM
+            conversations c
+        JOIN
+            queries q ON c.id = q.conversation_id
+        JOIN
+            responses r ON q.id = r.query_id
+        WHERE
+            r.status = 'unreviewed'
+        GROUP BY
+            c.id, c.created_at
+        ORDER BY
+            earliest_unreviewed_query ASC;
+        """
+
+        cursor.execute(query)
+        conversations = cursor.fetchall()
+
+        conn.close()
+
+        # Convert the results to a list of dictionaries
+        conversation_list = []
+        for row in conversations:
+            conversation_dict = {
+                'conversation_id': row[0],
+                'conversation_created_at': row[1],
+                'earliest_unreviewed_query': row[2]
+            }
+            conversation_list.append(conversation_dict)
 
         return jsonify({"success": True, "data": conversation_list})
 
