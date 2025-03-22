@@ -11,13 +11,23 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Conversations table
+CREATE TABLE conversations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    patient_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES users(id)
+);
+
 -- Patient queries
 CREATE TABLE queries (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
     patient_id INT NOT NULL,
     question TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES users(id)
+    FOREIGN KEY (patient_id) REFERENCES users(id),
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id)
 );
 
 -- AI and clinician responses
