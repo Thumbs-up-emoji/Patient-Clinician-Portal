@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from backend.api.clinician_routes import clinician_bp
+from api.clinician_routes import clinician_bp
 
 app = Flask(__name__)
 

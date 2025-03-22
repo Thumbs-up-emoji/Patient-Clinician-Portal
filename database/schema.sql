@@ -27,7 +27,7 @@ CREATE TABLE responses (
     ai_response TEXT NOT NULL,
     clinician_response TEXT,
     clinician_id INT,
-    status ENUM('unreviewed', 'reviewed', 'edited') DEFAULT 'unreviewed',
+    status ENUM('unreviewed', 'reviewed') DEFAULT 'unreviewed',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     reviewed_at TIMESTAMP,
     FOREIGN KEY (query_id) REFERENCES queries(id),
