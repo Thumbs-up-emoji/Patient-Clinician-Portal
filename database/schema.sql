@@ -25,6 +25,7 @@ CREATE TABLE queries (
     conversation_id INT NOT NULL,
     patient_id INT NOT NULL,
     question TEXT NOT NULL,
+    image_url VARCHAR(255),  -- New column for image URL
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (patient_id) REFERENCES users(id),
     FOREIGN KEY (conversation_id) REFERENCES conversations(id)
