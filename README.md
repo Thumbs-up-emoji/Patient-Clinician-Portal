@@ -41,3 +41,19 @@ Accessibility, Notifications, and more - Incorporate speech input and TTS featur
 
 Testing and Deployment - Thorough cross-platform testing of core functionalities, followed by addressing of bugs in order of priority. 
 Subsequently, we proceed with deployment via a cloud platform such as AWS, followed by further testing and optimisation where appropriate.
+
+TODO:
+1. Backend-
+    i) Updated conversation history handling for AI API calls (See Perplexity)
+    ii) User login/signup handling
+    iii) Admin functions (adding clinicians)
+    iv) User medical data storage
+    v) Other features?
+    vi) Video demo
+2. Unit Tests
+3. Cloud deployment
+4. Frontend-
+    i) Fundamental features
+    ii) Saving user query images and sending URLs to backend
+    iii) Upload to gdrive for user medical data 
+5. Documentation and code maintainability (Include changes made in design process against proposal)
