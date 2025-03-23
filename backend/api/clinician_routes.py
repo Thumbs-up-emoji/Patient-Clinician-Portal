@@ -68,7 +68,7 @@ def get_conversation(conversation_id):
             q.question,
             q.created_at AS query_created_at,
             r.id AS response_id,
-            r.response,
+            r.ai_response,
             r.clinician_response,
             r.status,
             r.created_at AS response_created_at

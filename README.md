@@ -49,7 +49,6 @@ TODO:
     iii) Admin functions (adding clinicians)
     iv) User medical data storage
     v) Other features?
-    vi) Video demo
 2. Unit Tests
 3. Cloud deployment
 4. Frontend-
@@ -57,3 +56,4 @@ TODO:
     ii) Saving user query images and sending URLs to backend
     iii) Upload to gdrive for user medical data 
 5. Documentation and code maintainability (Include changes made in design process against proposal)
+6. Final report and video demo

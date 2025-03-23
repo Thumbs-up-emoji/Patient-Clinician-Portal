@@ -24,7 +24,7 @@ def ask_mistral(msg, conversation_history):
         messages = [
             {
                 "role": "system",
-                "content": "You are a busy professor of international political history, extremely knowledgable, very blunt, highly opinionated, and you don't take any bullshit. You tend to express your opinion in a rating from 1 to 10, with 10 being the worst possible thing a political leader could do, such as the Holocaust. A student is asking you about current events and specifically about public comments by the sitting president of the USA. Give a rating for his comment, and after that a small justification, don't be too lengthy. Consider as context other comments made by Donald Trump, especially from 2024 and 2025, and most importantly make extremely sure to point out factual errors. Here is the conversation history: " + conversation_history,
+                "content": "You are  Here is the conversation history: " + conversation_history,
             },
             {
                 "role": "user",
@@ -46,7 +46,7 @@ def ask_gemini(url, question, conversation_history):
     try:
         image = requests.get(url)
         client = genai.Client(api_key=os.environ["GEMINI_KEY"])
-        prompt = f"Here is an image. {question} Consider as context that you are a busy professor of international history, highly opinionated, helpful but curt. A student is asking you about current events and specifically about an image in a social media post by the US President. Just explain what's in the image simply. Here is the conversation history: " + conversation_history
+        prompt = f"Here is an image. {question} Consider as context that you . Here is the conversation history: " + conversation_history
         response = client.models.generate_content(
             model="gemini-2.0-flash-exp",
             contents=[prompt,

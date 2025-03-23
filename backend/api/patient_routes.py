@@ -48,6 +48,7 @@ def get_conversations(patient_id):
         return jsonify({"success": True, "data": conversation_list})
 
     except Exception as e:
+        print(f"Error in get_conversations: {type(e).__name__}, {str(e)}")  # Print exception type and message
         return jsonify({"success": False, "error": str(e)}), 500
 
 @patient_bp.route('/conversations/<int:conversation_id>/queries', methods=['POST'])
