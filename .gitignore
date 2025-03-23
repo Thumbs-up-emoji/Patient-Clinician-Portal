@@ -2,3 +2,4 @@ backend/api/__pycache__/ai_handler.cpython-312.pyc
 backend/.env
 backend/api/__pycache__/clinician_routes.cpython-312.pyc
 backend/api/__pycache__/patient_routes.cpython-312.pyc
+backend/api/log.txt
