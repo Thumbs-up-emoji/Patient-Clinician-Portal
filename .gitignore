@@ -3,3 +3,9 @@ backend/.env
 backend/api/__pycache__/clinician_routes.cpython-312.pyc
 backend/api/__pycache__/patient_routes.cpython-312.pyc
 backend/api/log.txt
+backend/__pycache__/ai_handler.cpython-312.pyc
+backend/api/log.txt
+backend/api/__pycache__/clinician_routes.cpython-312.pyc
+backend/api/__pycache__/conftest.cpython-312-pytest-8.3.5.pyc
+backend/api/__pycache__/test_clinician_routes.cpython-312-pytest-8.3.5.pyc
+backend/config/__pycache__/db_config.cpython-312.pyc
