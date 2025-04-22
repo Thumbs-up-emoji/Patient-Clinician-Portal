@@ -10,7 +10,7 @@ def get_conversations(patient_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-
+        # Modified query to handle empty conversations
         query = """
         SELECT
             c.id AS conversation_id,
@@ -20,11 +20,19 @@ def get_conversations(patient_id):
             q.created_at AS first_query_created_at
         FROM
             conversations c
+        LEFT JOIN (
+            SELECT 
+                conversation_id, 
+                MIN(id) as min_id
+            FROM 
+                queries
+            GROUP BY 
+                conversation_id
+        ) as min_q ON c.id = min_q.conversation_id
         LEFT JOIN
-            queries q ON c.id = q.conversation_id
+            queries q ON min_q.min_id = q.id
         WHERE
             c.patient_id = %s
-        AND q.id = (SELECT MIN(id) FROM queries WHERE conversation_id = c.id)
         ORDER BY
             c.created_at DESC;
         """
@@ -37,19 +45,23 @@ def get_conversations(patient_id):
         conversation_list = []
         for row in conversations:
             conversation_dict = {
-                'conversation_id': row[0],
-                'conversation_created_at': row[1],
-                'first_query_id': row[2],
-                'first_query_question': row[3],
-                'first_query_created_at': row[4]
+                'conversation_id': row['conversation_id'],
+                'conversation_created_at': row['conversation_created_at'],
+                'first_query_id': row['first_query_id'],
+                'first_query_question': row['first_query_question'],
+                'first_query_created_at': row['first_query_created_at']
             }
             conversation_list.append(conversation_dict)
 
         return jsonify({"success": True, "data": conversation_list})
 
     except Exception as e:
-        print(f"Error in get_conversations: {type(e).__name__}, {str(e)}")  # Print exception type and message
-        return jsonify({"success": False, "error": str(e)}), 500
+        import traceback
+        error_traceback = traceback.format_exc()
+        error_message = f"{type(e).__name__}: {str(e)}"
+        print(f"Error in get_conversations: {error_message}")
+        print(f"Traceback: {error_traceback}")
+        return jsonify({"success": False, "error": error_message, "traceback": error_traceback}), 500
 
 @patient_bp.route('/conversations/<int:conversation_id>/queries', methods=['POST'])
 def add_query(conversation_id):
@@ -85,11 +97,20 @@ def add_query(conversation_id):
         ai_response = handle_ai(question, image_url, conversation_history)
 
         if ai_response:
-            # Store AI response
-            success, message = store_ai_response(query_id, ai_response)
-            if not success:
-                return jsonify({"success": False, "error": message}), 500
+            # Store AI response using the SAME connection
+            query = """
+            INSERT INTO responses (query_id, ai_response, clinician_response, status)
+            VALUES (%s, %s, NULL, 'unreviewed');
+            """
+            print(1)
+            values = (query_id, ai_response)
+            print(2)
+            cursor.execute(query, values)
+            print(3)
+            conn.commit()
+            print(4)
         else:
+            conn.close()
             return jsonify({"success": False, "error": "Failed to get AI response"}), 500
 
         conn.close()

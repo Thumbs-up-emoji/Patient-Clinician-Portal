@@ -44,16 +44,17 @@ Subsequently, we proceed with deployment via a cloud platform such as AWS, follo
 
 TODO:
 1. Backend-
-    i) Updated conversation history handling for AI API calls (See Perplexity)
+    i) Notifications
     ii) User login/signup handling
     iii) Admin functions (adding clinicians)
     iv) User medical data storage
     v) Other features?
-2. Unit Tests
+2. Unit Tests (more needed)
 3. Cloud deployment
 4. Frontend-
     i) Fundamental features
     ii) Saving user query images and sending URLs to backend
     iii) Upload to gdrive for user medical data 
+    iv) Accessibility features
 5. Documentation and code maintainability (Include changes made in design process against proposal)
 6. Final report and video demo
