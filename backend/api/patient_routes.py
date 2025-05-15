@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from config.db_config import get_db_connection
-from ai_handler import handle_ai
+from .ai_handler import handle_ai
 
 patient_bp = Blueprint('patient', __name__)
 
