@@ -84,7 +84,8 @@ def get_conversation(conversation_id):
 
         cursor.execute(query, (conversation_id,))
         conversation = cursor.fetchall()
-
+        if not conversation:
+            return jsonify({"success": True, "data": [], "message": "No queries found for this conversation"}), 200
         conn.close()
 
         # Convert the results to a list of dictionaries
@@ -135,7 +136,9 @@ def get_pending_conversations():
 
         cursor.execute(query)
         conversations = cursor.fetchall()
-
+        if not conversations:
+            return jsonify({"success": True, "data": [], "message": "No unreviewed responses found"}), 200
+        
         conn.close()
 
         # Convert the results to a list of dictionaries
