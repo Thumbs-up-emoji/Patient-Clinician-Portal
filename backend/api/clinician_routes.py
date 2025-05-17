@@ -30,6 +30,9 @@ def update_response(response_id):
         return jsonify({"success": True, "message": "Response updated successfully"})
 
     except Exception as e:
+        import traceback
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())  # Shows full stack trace
         return jsonify({"success": False, "error": str(e)}), 500
     
 @clinician_bp.route('/responses/verify/<int:response_id>', methods=['PUT'])
@@ -53,6 +56,9 @@ def verify_response(response_id):
         return jsonify({"success": True, "message": "Response verified successfully"})
 
     except Exception as e:
+        import traceback
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())  # Shows full stack trace
         return jsonify({"success": False, "error": str(e)}), 500
     
 @clinician_bp.route('/conversation/<int:conversation_id>', methods=['GET'])
@@ -92,20 +98,23 @@ def get_conversation(conversation_id):
         conversation_list = []
         for row in conversation:
             query_dict = {
-                'query_id': row[0],
-                'question': row[1],
-                'query_created_at': row[2],
-                'response_id': row[3],
-                'response': row[4],
-                'clinician_response': row[5],
-                'status': row[6],
-                'response_created_at': row[7]
+                'query_id': row['query_id'],
+                'question': row['question'],
+                'query_created_at': row['query_created_at'],
+                'response_id': row['response_id'],
+                'response': row['ai_response'],
+                'clinician_response': row['clinician_response'],
+                'status': row['status'],
+                'response_created_at': row['response_created_at']
             }
             conversation_list.append(query_dict)
 
         return jsonify({"success": True, "data": conversation_list})
 
     except Exception as e:
+        import traceback
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())  # Shows full stack trace
         return jsonify({"success": False, "error": str(e)}), 500
 
 @clinician_bp.route('/pending-conversations', methods=['GET'])
@@ -145,13 +154,16 @@ def get_pending_conversations():
         conversation_list = []
         for row in conversations:
             conversation_dict = {
-                'conversation_id': row[0],
-                'conversation_created_at': row[1],
-                'earliest_unreviewed_query': row[2]
+                'conversation_id': row['conversation_id'],
+                'conversation_created_at': row['conversation_created_at'],
+                'earliest_unreviewed_query': row['earliest_unreviewed_query']
             }
             conversation_list.append(conversation_dict)
 
         return jsonify({"success": True, "data": conversation_list})
 
     except Exception as e:
+        import traceback
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())  # Shows full stack trace
         return jsonify({"success": False, "error": str(e)}), 500
