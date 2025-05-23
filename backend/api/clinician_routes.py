@@ -1,5 +1,11 @@
 from flask import Blueprint, request, jsonify
 from config.db_config import get_db_connection
+import pywhatkit
+import pyautogui
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import os
 
 clinician_bp = Blueprint('clinician', __name__)
 
@@ -167,3 +173,27 @@ def get_pending_conversations():
         print(f"Error: {str(e)}")
         print(traceback.format_exc())  # Shows full stack trace
         return jsonify({"success": False, "error": str(e)}), 500
+    
+def notify(num, answer_edited, email):
+    # Notifies relevant patients about their queries
+    pywhatkit.sendwhatmsg_instantly(num, "Query updated on patient-clinician-portal!", wait_time=10, tab_close=True, close_time=2)
+    pyautogui.press("enter")
+    if answer_edited:
+        send_email("Answer Edited", "Query updated on patient-clinician-portal!", "patientclinicianportal@gmail.com", email, os.environ.get('EMAIL_PASSWORD'))
+    else:
+        send_email("Answer Verified", "Query updated on patient-clinician-portal!", "patientclinicianportal@gmail.com", email, os.environ.get('EMAIL_PASSWORD'))
+
+def send_email(subject, message, from_addr, to_addr, password):
+    msg = MIMEMultipart()
+    msg['From'] = from_addr
+    msg['To'] = to_addr
+    msg['Subject'] = subject
+
+    msg.attach(MIMEText(message, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(from_addr, password)
+    text = msg.as_string()
+    server.sendmail(from_addr, to_addr, text)
+    server.quit()
