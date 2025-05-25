@@ -18,3 +18,18 @@ Time: 14:22
 Phone Number: +918008602198
 Message: hello
 --------------------
+Date: 23/5/2025
+Time: 15:41
+Phone Number: +918008602198
+Message: Query updated on patient-clinician-portal!
+--------------------
+Date: 23/5/2025
+Time: 15:41
+Phone Number: +918008602198
+Message: Query updated on patient-clinician-portal!
+--------------------
+Date: 23/5/2025
+Time: 15:43
+Phone Number: +918008602198
+Message: Query updated on patient-clinician-portal!
+--------------------

@@ -32,7 +32,31 @@ def update_response(response_id):
         cursor.execute(query, values)
         conn.commit()
 
+        # Get patient contact info for notification
+        query = """
+            SELECT u.email, u.phone_number
+            FROM responses r
+            JOIN queries q ON r.query_id = q.id
+            JOIN conversations c ON q.conversation_id = c.id
+            JOIN users u ON c.patient_id = u.id
+            WHERE r.id = %s
+            """
+        cursor.execute(query, (response_id,))
+        user_info = cursor.fetchone()
+
         conn.close()
+
+        # Send notification if patient info exists
+        if user_info:
+            try:
+                phone_number = user_info['phone_number']
+                email = user_info['email']
+                notify(phone_number, True, email)
+                print(f"Notification sent to {email} and {phone_number}")
+            except Exception as notify_error:
+                print(f"Notification failed: {str(notify_error)}")
+                # Continue execution even if notification fails
+
         return jsonify({"success": True, "message": "Response updated successfully"})
 
     except Exception as e:
@@ -58,7 +82,31 @@ def verify_response(response_id):
         cursor.execute(query, values)
         conn.commit()
 
+        # Get patient contact info for notification
+        query = """
+            SELECT u.email, u.phone_number
+            FROM responses r
+            JOIN queries q ON r.query_id = q.id
+            JOIN conversations c ON q.conversation_id = c.id
+            JOIN users u ON c.patient_id = u.id
+            WHERE r.id = %s
+            """
+        cursor.execute(query, (response_id,))
+        user_info = cursor.fetchone()
+
         conn.close()
+
+        # Send notification if patient info exists
+        if user_info:
+            try:
+                phone_number = user_info['phone_number']
+                email = user_info['email']
+                notify(phone_number, False, email)  # False indicates verification, not editing
+                print(f"Notification sent to {email} and {phone_number}")
+            except Exception as notify_error:
+                print(f"Notification failed: {str(notify_error)}")
+                # Continue execution even if notification fails
+
         return jsonify({"success": True, "message": "Response verified successfully"})
 
     except Exception as e:
