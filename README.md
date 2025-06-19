@@ -31,7 +31,6 @@ Database: MySQL to store patient inquiries, responses, and other user data.
 Authentication: Google OAuth 2.0 to enable secure login and role management.
 Communication: Libraries like smtplib and pywhatkit to be used to send notifications when required.
 
-
 Implementation Strategy:-
 Accessibility is integrated as a core principle from the outset to ensure inclusivity. Speech input, text-to-speech output, and a clean, minimalistic UI are prioritized throughout the development process to accommodate users with disabilities and those with limited technical literacy.
 Milestones:
@@ -44,17 +43,14 @@ Subsequently, we proceed with deployment via a cloud platform such as AWS, follo
 
 TODO:
 1. Backend-
-    i) Notifications
+    i) Auth for both clinicians and admins
     ii) User login/signup handling
     iii) Admin functions (adding clinicians)
     iv) User medical data storage
     v) Other features?
-2. Unit Tests (more needed)
-3. Cloud deployment
-4. Frontend-
+2. Cloud deployment
+3. Frontend-
     i) Fundamental features
     ii) Saving user query images and sending URLs to backend
     iii) Upload to gdrive for user medical data 
     iv) Accessibility features
-5. Documentation and code maintainability (Include changes made in design process against proposal)
-6. Final report and video demo

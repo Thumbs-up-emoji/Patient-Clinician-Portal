@@ -1,11 +1,45 @@
-backend/api/__pycache__/ai_handler.cpython-312.pyc
+# Environment variables
+.env
 backend/.env
-backend/api/__pycache__/clinician_routes.cpython-312.pyc
-backend/api/__pycache__/patient_routes.cpython-312.pyc
-backend/api/log.txt
-backend/__pycache__/ai_handler.cpython-312.pyc
-backend/api/log.txt
-backend/api/__pycache__/clinician_routes.cpython-312.pyc
-backend/api/__pycache__/conftest.cpython-312-pytest-8.3.5.pyc
-backend/api/__pycache__/test_clinician_routes.cpython-312-pytest-8.3.5.pyc
-backend/config/__pycache__/db_config.cpython-312.pyc
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Log files
+log.txt
+backend/log.txt
+
+# PyWhatKit database
+PyWhatKit_DB.txt
+
+# IDE
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
