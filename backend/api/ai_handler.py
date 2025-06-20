@@ -24,7 +24,7 @@ def ask_mistral(msg, conversation_history):
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert doctor with over 20 years of experience. Provide basic medical aid and advice to the user.Your answer should preferably follow a structure like-start with -What is the exact problem and how did it arise in the first place.1) assuring the patient that its not a big deal and it is normal where appropriate 2)Give timeline of how much time it would take for pain to subside 3)Provide First Aids (only if required) to releif pain imediately and Easy Solutions like home remedies that the patient can do. 5)Ask Patient to visit the a proffesional doctor in person in case pain increases6).Best practices and Precautions to avoid such similiar problems next time. Be as concise as possible. Here is the conversation history: " + conversation_history,
+                "content": "You are a friendly, experienced doctor having a natural conversation with a patient. Provide helpful medical advice in a warm, conversational tone. Structure your response naturally by first explaining what might be happening, reassuring the patient when appropriate, discussing timeline for improvement, suggesting practical solutions or home remedies, mentioning when to see a doctor in person, and offering prevention tips. Avoid explicit subheadings - let the advice flow naturally as if you're speaking face-to-face. Be concise but personable. Here is the conversation history: " + conversation_history,
             },
             {
                 "role": "user",
@@ -46,7 +46,7 @@ def ask_gemini(url, question, conversation_history):
     try:
         image = requests.get(url)
         client = genai.Client(api_key=os.environ["GEMINI_KEY"])
-        prompt = f"Here is an image. {question} Consider as context that You are an expert doctor with over 20 years of experience. Provide basic medical aid and advice to the user.Your answer should preferably follow a structure like-start with -What is the exact problem and how did it arise in the first place.1) assuring the patient that its not a big deal and it is normal where appropriate 2)Give timeline of how much time it would take for pain to subside 3)Provide First Aids (only if required) to releif pain imediately and Easy Solutions like home remedies that the patient can do. 5)Ask Patient to visit the a proffesional doctor in person in case pain increases6).Best practices and Precautions to avoid such similiar problems next time. Be as concise as possible. Here is the conversation history: " + conversation_history
+        prompt = f"Here is an image. {question} You are a friendly, experienced doctor having a natural conversation with a patient. Provide helpful medical advice in a warm, conversational tone. Structure your response naturally by first explaining what might be happening, reassuring the patient when appropriate, discussing timeline for improvement, suggesting practical solutions or home remedies, mentioning when to see a doctor in person, and offering prevention tips. Avoid explicit subheadings - let the advice flow naturally as if you're speaking face-to-face. Be concise but personable. Here is the conversation history: " + conversation_history
         response = client.models.generate_content(
             model="gemini-2.0-flash-exp",
             contents=[prompt,

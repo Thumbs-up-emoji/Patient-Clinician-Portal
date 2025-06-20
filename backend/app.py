@@ -1,6 +1,9 @@
 from flask import Flask, jsonify
 from api.clinician_routes import clinician_bp
 from api.patient_routes import patient_bp
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.DEBUG)
 
 app = Flask(__name__)
 
@@ -13,5 +16,4 @@ def health_check():
     return jsonify({"status": "ok", "message": "Server is running"})
 
 if __name__ == '__main__':
-    print("Starting Flask server...")
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

@@ -63,6 +63,62 @@ def get_conversations(patient_id):
         print(f"Traceback: {error_traceback}")
         return jsonify({"success": False, "error": error_message, "traceback": error_traceback}), 500
 
+@patient_bp.route('/conversation/<int:conversation_id>', methods=['GET'])
+def get_conversation(conversation_id):
+    """Get all queries and responses for a conversation."""
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        query = """
+        SELECT
+            q.id AS query_id,
+            q.question,
+            q.created_at AS query_created_at,
+            r.id AS response_id,
+            r.ai_response,
+            r.clinician_response,
+            r.status,
+            r.created_at AS response_created_at
+        FROM
+            queries q
+        LEFT JOIN
+            responses r ON q.id = r.query_id
+        WHERE
+            q.conversation_id = %s
+        ORDER BY
+            q.created_at ASC;
+        """
+
+        cursor.execute(query, (conversation_id,))
+        conversation = cursor.fetchall()
+        if not conversation:
+            return jsonify({"success": True, "data": [], "message": "No queries found for this conversation"}), 200
+        conn.close()
+
+        # Convert the results to a list of dictionaries
+        conversation_list = []
+        for row in conversation:
+            query_dict = {
+                'query_id': row['query_id'],
+                'question': row['question'],
+                'query_created_at': row['query_created_at'],
+                'response_id': row['response_id'],
+                'response': row['ai_response'],
+                'clinician_response': row['clinician_response'],
+                'status': row['status'],
+                'response_created_at': row['response_created_at']
+            }
+            conversation_list.append(query_dict)
+
+        return jsonify({"success": True, "data": conversation_list})
+
+    except Exception as e:
+        import traceback
+        print(f"Error: {str(e)}")
+        print(traceback.format_exc())  # Shows full stack trace
+        return jsonify({"success": False, "error": str(e)}), 500
+
 @patient_bp.route('/conversations/<int:conversation_id>/queries', methods=['POST'])
 def add_query(conversation_id):
     """Add a new query to an existing conversation."""
