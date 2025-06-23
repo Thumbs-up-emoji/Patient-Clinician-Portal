@@ -47,10 +47,4 @@ TODO:
     ii) User login/signup handling
     iii) Admin functions (adding clinicians)
     iv) User medical data storage
-    v) Other features?
 2. Cloud deployment
-3. Frontend-
-    i) Fundamental features
-    ii) Saving user query images and sending URLs to backend
-    iii) Upload to gdrive for user medical data 
-    iv) Accessibility features

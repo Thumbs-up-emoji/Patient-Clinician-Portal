@@ -49,6 +49,10 @@ if 'selected_conversation_id' not in st.session_state:
     st.session_state.selected_conversation_id = None
 if 'pending_conversations' not in st.session_state:
     st.session_state.pending_conversations = None
+if 'editing_response_id' not in st.session_state:
+    st.session_state.editing_response_id = None
+if 'edit_text' not in st.session_state:
+    st.session_state.edit_text = ""
 
 # Navigation functions
 def go_to_review(conversation_id):
@@ -58,6 +62,16 @@ def go_to_review(conversation_id):
 def go_back():
     st.session_state.page = 'main'
     st.session_state.selected_conversation_id = None
+    st.session_state.editing_response_id = None
+    st.session_state.edit_text = ""
+
+def start_editing(response_id, current_text):
+    st.session_state.editing_response_id = response_id
+    st.session_state.edit_text = current_text
+
+def cancel_editing():
+    st.session_state.editing_response_id = None
+    st.session_state.edit_text = ""
 
 # Main page
 if st.session_state.page == 'main':
@@ -132,7 +146,45 @@ elif st.session_state.page == 'review':
                             st.write(f"**Asked on:** {item['query_created_at']}")
                             
                             if item['response']:
-                                st.write(f"**AI Response:** {item['response']}")
+                                # Check if this response is being edited
+                                if st.session_state.editing_response_id == item['response_id']:
+                                    st.write("**AI Response (Editing):**")
+                                    edited_text = st.text_area(
+                                        "Edit Response",
+                                        value=st.session_state.edit_text,
+                                        height=150,
+                                        key=f"edit_area_{item['response_id']}"
+                                    )
+                                    st.session_state.edit_text = edited_text
+                                    
+                                    # Save and Cancel buttons
+                                    col1, col2 = st.columns(2)
+                                    with col1:
+                                        if st.button(f"Save Changes", key=f"save_{item['response_id']}"):
+                                            try:
+                                                update_response = requests.put(
+                                                    f"{API_BASE_URL}/api/clinician/responses/edit/{item['response_id']}",
+                                                    json={"clinician_response": edited_text}
+                                                )
+                                                
+                                                if update_response.status_code == 200:
+                                                    st.success("Response updated successfully!")
+                                                    cancel_editing()
+                                                    # Clear pending conversations to refresh on back
+                                                    st.session_state.pending_conversations = None
+                                                    st.rerun()
+                                                else:
+                                                    st.error("Failed to update response")
+                                            except Exception as e:
+                                                st.error(f"Error updating response: {str(e)}")
+                                    
+                                    with col2:
+                                        if st.button(f"Cancel", key=f"cancel_{item['response_id']}"):
+                                            cancel_editing()
+                                            st.rerun()
+                                else:
+                                    # Display normal AI response
+                                    st.write(f"**AI Response:** {item['response']}")
                             
                             if item['clinician_response']:
                                 st.write(f"**Clinician Response:** {item['clinician_response']}")
@@ -143,7 +195,7 @@ elif st.session_state.page == 'review':
                                 st.write(f"**Response Date:** {item['response_created_at']}")
                             
                             # Add verify and edit buttons for unreviewed responses
-                            if item['status'] == 'unreviewed' and item['response_id']:
+                            if item['status'] == 'unreviewed' and item['response_id'] and st.session_state.editing_response_id != item['response_id']:
                                 col1, col2 = st.columns(2)
                                 
                                 with col1:
@@ -163,7 +215,8 @@ elif st.session_state.page == 'review':
                                 
                                 with col2:
                                     if st.button(f"Edit Response", key=f"edit_{item['response_id']}"):
-                                        st.info("Edit functionality coming soon...")
+                                        start_editing(item['response_id'], item['response'] or "")
+                                        st.rerun()
                             
                             st.divider()
                     else:
