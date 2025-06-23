@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from api.clinician_routes import clinician_bp
 from api.patient_routes import patient_bp
+from api.admin_routes import admin_bp
 import logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.DEBUG)
@@ -10,6 +11,7 @@ app = Flask(__name__)
 # Register blueprints
 app.register_blueprint(clinician_bp, url_prefix='/api/clinician')
 app.register_blueprint(patient_bp, url_prefix='/api/patient')
+app.register_blueprint(admin_bp, url_prefix='/api/admin')
 
 @app.route('/api/health', methods=['GET'])
 def health_check():

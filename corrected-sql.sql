@@ -2,29 +2,29 @@
 USE patient_portal;
 
 -- 1. Insert Users (10 patients, 5 clinicians, 2 admins)
-INSERT INTO users (email, name, role, google_id) VALUES
+INSERT INTO users (email, name, phone_number, role, google_id) VALUES
 -- Patients
-('patient1@example.com', 'John Smith', 'patient', 'google_id_p1'),
-('patient2@example.com', 'Emily Johnson', 'patient', 'google_id_p2'),
-('patient3@example.com', 'Michael Brown', 'patient', 'google_id_p3'),
-('patient4@example.com', 'Sarah Davis', 'patient', 'google_id_p4'),
-('patient5@example.com', 'Robert Wilson', 'patient', 'google_id_p5'),
-('patient6@example.com', 'Jennifer Lee', 'patient', 'google_id_p6'),
-('patient7@example.com', 'David Martinez', 'patient', 'google_id_p7'),
-('patient8@example.com', 'Lisa Anderson', 'patient', 'google_id_p8'),
-('patient9@example.com', 'James Taylor', 'patient', 'google_id_p9'),
-('patient10@example.com', 'Sophia Garcia', 'patient', 'google_id_p10'),
+('patient1@example.com', 'John Smith', '+918008602198', 'patient', 'google_id_p1'),
+('patient2@example.com', 'Emily Johnson', '+918008602198', 'patient', 'google_id_p2'),
+('patient3@example.com', 'Michael Brown', '+918008602198', 'patient', 'google_id_p3'),
+('patient4@example.com', 'Sarah Davis', '+918008602198', 'patient', 'google_id_p4'),
+('patient5@example.com', 'Robert Wilson', '+918008602198', 'patient', 'google_id_p5'),
+('patient6@example.com', 'Jennifer Lee', '+918008602198', 'patient', 'google_id_p6'),
+('patient7@example.com', 'David Martinez', '+918008602198', 'patient', 'google_id_p7'),
+('patient8@example.com', 'Lisa Anderson', '+918008602198', 'patient', 'google_id_p8'),
+('patient9@example.com', 'James Taylor', '+918008602198', 'patient', 'google_id_p9'),
+('patient10@example.com', 'Sophia Garcia', '+918008602198', 'patient', 'google_id_p10'),
 
 -- Clinicians
-('doctor1@example.com', 'Dr. Olivia Williams', 'clinician', 'google_id_d1'),
-('doctor2@example.com', 'Dr. William Jones', 'clinician', 'google_id_d2'),
-('doctor3@example.com', 'Dr. Emma Rodriguez', 'clinician', 'google_id_d3'),
-('nurse1@example.com', 'Nurse Daniel White', 'clinician', 'google_id_n1'),
-('nurse2@example.com', 'Nurse Maria Thompson', 'clinician', 'google_id_n2'),
+('doctor1@example.com', 'Dr. Olivia Williams', '+918008602198', 'clinician', 'google_id_d1'),
+('doctor2@example.com', 'Dr. William Jones', '+918008602198', 'clinician', 'google_id_d2'),
+('doctor3@example.com', 'Dr. Emma Rodriguez', '+918008602198', 'clinician', 'google_id_d3'),
+('nurse1@example.com', 'Nurse Daniel White', '+918008602198', 'clinician', 'google_id_n1'),
+('nurse2@example.com', 'Nurse Maria Thompson', '+918008602198', 'clinician', 'google_id_n2'),
 
 -- Admins
-('admin1@example.com', 'Admin Alex Johnson', 'admin', 'google_id_a1'),
-('admin2@example.com', 'Admin Samantha Clark', 'admin', 'google_id_a2');
+('admin1@example.com', 'Admin Alex Johnson', '+918008602198', 'admin', 'google_id_a1'),
+('admin2@example.com', 'Admin Samantha Clark', '+918008602198', 'admin', 'google_id_a2');
 
 -- 2. Insert Conversations (multiple conversations for some patients)
 INSERT INTO conversations (patient_id) VALUES

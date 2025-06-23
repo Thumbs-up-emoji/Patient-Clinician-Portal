@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from config.db_config import get_db_connection
+from api.config.db_config import get_db_connection
 from .ai_handler import handle_ai
 
 patient_bp = Blueprint('patient', __name__)
@@ -228,7 +228,11 @@ def create_conversation_and_query():
             return jsonify({"success": False, "error": "Failed to get AI response"}), 500
 
         conn.close()
-        return jsonify({"success": True, "message": "Conversation and query added successfully"}), 201
+        return jsonify({
+            "success": True, 
+            "message": "Conversation and query added successfully",
+            "conversation_id": conversation_id
+        }), 201
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
