@@ -224,8 +224,8 @@ def get_pending_conversations():
     
 def notify(num, answer_edited, email):
     # Notifies relevant patients about their queries
-    pywhatkit.sendwhatmsg_instantly(num, "Query updated on patient-clinician-portal!", wait_time=20, tab_close=True, close_time=2)
-    pyautogui.press("enter")
+    # pywhatkit.sendwhatmsg_instantly(num, "Query updated on patient-clinician-portal!", wait_time=20, tab_close=True, close_time=2)
+    # pyautogui.press("enter")
     if answer_edited:
         send_email("Answer Edited", "Query updated on patient-clinician-portal!", "patientclinicianportal@gmail.com", email, os.environ.get('EMAIL_PASSWORD'))
     else:
