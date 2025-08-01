@@ -38,7 +38,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # API base URL
-API_BASE_URL = "http://localhost:5000"
+#API_BASE_URL = "http://localhost:5000"
+API_BASE_URL = "http://51.20.187.213:5000"
 
 st.title("👨‍⚕️ Clinician Portal")
 
